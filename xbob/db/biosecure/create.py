@@ -289,11 +289,9 @@ def add_protocols(session):
 def create_tables(args):
   """Creates all necessary tables (only to be used at the first time)"""
 
-  from bob.db.utils import connection_string 
+  from bob.db.utils import connection_string_try_nolock 
  
-  from sqlalchemy import create_engine 
-  engine = create_engine(connection_string(args.type, args.files[0]), 
-      echo=(args.verbose >= 2))
+  engine = create_engine_try_nolock(args.type, args.files[0], echo=(args.verbose >= 2))
   Client.metadata.create_all(engine)
   File.metadata.create_all(engine)
   Protocol.metadata.create_all(engine)
