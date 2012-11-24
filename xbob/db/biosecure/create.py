@@ -334,7 +334,7 @@ def add_command(subparsers):
   parser.add_argument('-v', '--verbose', action='count',
       help="Do SQL operations in a verbose way")
   parser.add_argument('-D', '--imagedir', action='store', metavar='DIR',
-      default='/idiap/temp/cmccool/databases/biosecure/raw',
+      default='/idiap/group/biometric/databases/biosecure/',
       help="Change the relative path to the directory containing the images of the Biosecure database (defaults to %(default)s)")
   
   parser.set_defaults(func=create) #action
