@@ -25,7 +25,8 @@ setup(
     install_requires=[
       'setuptools',
       'bob',  # base signal proc./machine learning library
-    ],
+      'xbob.db.verification.utils' # defines a set of utilities for face verification databases like this one.
+      ],
 
     namespace_packages = [
       'xbob',
