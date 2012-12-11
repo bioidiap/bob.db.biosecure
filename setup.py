@@ -9,7 +9,7 @@ from setuptools import setup, find_packages
 setup(
 
     name='xbob.db.biosecure',
-    version='1.0.0a1',
+    version='1.0.0',
     description='Biosecure Database Access API for Bob',
     url='http://github.com/bioidiap/xbob.db.biosecure',
     license='GPLv3',
