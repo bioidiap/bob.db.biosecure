@@ -13,239 +13,54 @@ def nodot(item):
   """Can be used to ignore hidden files, starting with the . character."""
   return item[0] != '.'
 
-def add_clients(session):
+def add_clients(session, verbose):
   """Add clients to the Biosecure database."""
 
   # world
-  w = 'world'
-  session.add(Client(3, w))
-  session.add(Client(5, w))
-  session.add(Client(10, w))
-  session.add(Client(12, w))
-  session.add(Client(13, w))
-  session.add(Client(14, w))
-  session.add(Client(15, w))
-  session.add(Client(17, w))
-  session.add(Client(23, w))
-  session.add(Client(24, w))
-  session.add(Client(29, w))
-  session.add(Client(33, w))
-  session.add(Client(36, w))
-  session.add(Client(37, w))
-  session.add(Client(38, w))
-  session.add(Client(39, w))
-  session.add(Client(42, w))
-  session.add(Client(47, w))
-  session.add(Client(58, w))
-  session.add(Client(62, w))
-  session.add(Client(64, w))
-  session.add(Client(73, w))
-  session.add(Client(78, w))
-  session.add(Client(80, w))
-  session.add(Client(81, w))
-  session.add(Client(82, w))
-  session.add(Client(83, w))
-  session.add(Client(85, w))
-  session.add(Client(89, w))
-  session.add(Client(93, w))
-  session.add(Client(102, w))
-  session.add(Client(104, w))
-  session.add(Client(107, w))
-  session.add(Client(108, w))
-  session.add(Client(109, w))
-  session.add(Client(111, w))
-  session.add(Client(112, w))
-  session.add(Client(117, w))
-  session.add(Client(119, w))
-  session.add(Client(123, w))
-  session.add(Client(126, w))
-  session.add(Client(130, w))
-  session.add(Client(133, w))
-  session.add(Client(137, w))
-  session.add(Client(138, w))
-  session.add(Client(143, w))
-  session.add(Client(146, w))
-  session.add(Client(147, w))
-  session.add(Client(150, w))
-  session.add(Client(152, w))
-  session.add(Client(154, w))
-  session.add(Client(155, w))
-  session.add(Client(156, w))
-  session.add(Client(158, w))
-  session.add(Client(160, w))
-  session.add(Client(163, w))
-  session.add(Client(164, w))
-  session.add(Client(176, w))
-  session.add(Client(178, w))
-  session.add(Client(180, w))
-  session.add(Client(183, w))
-  session.add(Client(196, w))
-  session.add(Client(198, w))
-  session.add(Client(199, w))
-  session.add(Client(200, w))
-  session.add(Client(201, w))
-  session.add(Client(203, w))
-  session.add(Client(206, w))
-  session.add(Client(209, w))
-  session.add(Client(210, w))
+  group_world = 'world'
+  list_world = [  3,   5,  10,  12,  13,  14,  15,  17,  23,  24,
+                 29,  33,  36,  37,  38,  39,  42,  47,  58,  62,
+                 64,  73,  78,  80,  81,  82,  83,  85,  89,  93,
+                102, 104, 107, 108, 109, 111, 112, 117, 119, 123,
+                126, 130, 133, 137, 138, 143, 146, 147, 150, 152, 
+                154, 155, 156, 158, 160, 163, 164, 176, 178, 180,
+                183, 196, 198, 199, 200, 201, 203, 206, 209, 210]
   # dev
-  d = 'dev'
-  session.add(Client(6, d))
-  session.add(Client(7, d))
-  session.add(Client(16, d))
-  session.add(Client(18, d))
-  session.add(Client(19, d))
-  session.add(Client(20, d))
-  session.add(Client(21, d))
-  session.add(Client(22, d))
-  session.add(Client(25, d))
-  session.add(Client(27, d))
-  session.add(Client(28, d))
-  session.add(Client(32, d))
-  session.add(Client(40, d))
-  session.add(Client(41, d))
-  session.add(Client(49, d))
-  session.add(Client(50, d))
-  session.add(Client(52, d))
-  session.add(Client(54, d))
-  session.add(Client(55, d))
-  session.add(Client(60, d))
-  session.add(Client(63, d))
-  session.add(Client(67, d))
-  session.add(Client(68, d))
-  session.add(Client(69, d))
-  session.add(Client(70, d))
-  session.add(Client(75, d))
-  session.add(Client(76, d))
-  session.add(Client(79, d))
-  session.add(Client(84, d))
-  session.add(Client(88, d))
-  session.add(Client(92, d))
-  session.add(Client(94, d))
-  session.add(Client(96, d))
-  session.add(Client(97, d))
-  session.add(Client(98, d))
-  session.add(Client(99, d))
-  session.add(Client(103, d))
-  session.add(Client(105, d))
-  session.add(Client(115, d))
-  session.add(Client(118, d))
-  session.add(Client(120, d))
-  session.add(Client(121, d))
-  session.add(Client(122, d))
-  session.add(Client(124, d))
-  session.add(Client(127, d))
-  session.add(Client(129, d))
-  session.add(Client(131, d))
-  session.add(Client(134, d))
-  session.add(Client(135, d))
-  session.add(Client(136, d))
-  session.add(Client(141, d))
-  session.add(Client(142, d))
-  session.add(Client(145, d))
-  session.add(Client(153, d))
-  session.add(Client(157, d))
-  session.add(Client(159, d))
-  session.add(Client(165, d))
-  session.add(Client(166, d))
-  session.add(Client(168, d))
-  session.add(Client(169, d))
-  session.add(Client(170, d))
-  session.add(Client(172, d))
-  session.add(Client(175, d))
-  session.add(Client(184, d))
-  session.add(Client(185, d))
-  session.add(Client(190, d))
-  session.add(Client(193, d))
-  session.add(Client(194, d))
-  session.add(Client(204, d))
-  session.add(Client(208, d))
+  group_dev = 'dev'
+  list_dev =   [  6,   7,  16,  18,  19,  20,  21,  22,  25,  27,
+                 28,  32,  40,  41,  49,  50,  52,  54,  55,  60,
+                 63,  67,  68,  69,  70,  75,  76,  79,  84,  88,
+                 92,  94,  96,  97,  98,  99, 103, 105, 115, 118,
+                120, 121, 122, 124, 127, 129, 131, 134, 135, 136,
+                141, 142, 145, 153, 157, 159, 165, 166, 168, 169,
+                170, 172, 175, 184, 185, 190, 193, 194, 204, 208]
   # eval
-  e = 'eval'
-  session.add(Client(1, e))
-  session.add(Client(2, e))
-  session.add(Client(4, e))
-  session.add(Client(8, e))
-  session.add(Client(9, e))
-  session.add(Client(11, e))
-  session.add(Client(26, e))
-  session.add(Client(30, e))
-  session.add(Client(31, e))
-  session.add(Client(34, e))
-  session.add(Client(35, e))
-  session.add(Client(43, e))
-  session.add(Client(44, e))
-  session.add(Client(45, e))
-  session.add(Client(46, e))
-  session.add(Client(48, e))
-  session.add(Client(51, e))
-  session.add(Client(53, e))
-  session.add(Client(56, e))
-  session.add(Client(57, e))
-  session.add(Client(59, e))
-  session.add(Client(61, e))
-  session.add(Client(65, e))
-  session.add(Client(66, e))
-  session.add(Client(71, e))
-  session.add(Client(72, e))
-  session.add(Client(74, e))
-  session.add(Client(77, e))
-  session.add(Client(86, e))
-  session.add(Client(87, e))
-  session.add(Client(90, e))
-  session.add(Client(91, e))
-  session.add(Client(95, e))
-  session.add(Client(100, e))
-  session.add(Client(101, e))
-  session.add(Client(106, e))
-  session.add(Client(110, e))
-  session.add(Client(113, e))
-  session.add(Client(114, e))
-  session.add(Client(116, e))
-  session.add(Client(125, e))
-  session.add(Client(128, e))
-  session.add(Client(132, e))
-  session.add(Client(139, e))
-  session.add(Client(140, e))
-  session.add(Client(144, e))
-  session.add(Client(148, e))
-  session.add(Client(149, e))
-  session.add(Client(151, e))
-  session.add(Client(161, e))
-  session.add(Client(162, e))
-  session.add(Client(167, e))
-  session.add(Client(171, e))
-  session.add(Client(173, e))
-  session.add(Client(174, e))
-  session.add(Client(177, e))
-  session.add(Client(179, e))
-  session.add(Client(181, e))
-  session.add(Client(182, e))
-  session.add(Client(186, e))
-  session.add(Client(187, e))
-  session.add(Client(188, e))
-  session.add(Client(189, e))
-  session.add(Client(191, e))
-  session.add(Client(192, e))
-  session.add(Client(195, e))
-  session.add(Client(197, e))
-  session.add(Client(202, e))
-  session.add(Client(205, e))
-  session.add(Client(207, e))
+  group_eval = 'eval'
+  list_eval =   [  1,   2,   4,   8,   9,  11,  26,  30,  31,  34,
+                  35,  43,  44,  45,  46,  48,  51,  53,  56,  57,
+                  59,  61,  65,  66,  71,  72,  74,  77,  86,  87,
+                  90,  91,  95, 100, 101, 106, 110, 113, 114, 116,
+                 125, 128, 132, 139, 140, 144, 148, 149, 151, 161,
+                 162, 167, 171, 173, 174, 177, 179, 181, 182, 186,
+                 187, 188, 189, 191, 192, 195, 197, 202, 205, 207]
+  groups = [group_world, group_dev, group_eval]
+  lists  = [list_world, list_dev, list_eval]
+  for k in range(len(groups)):
+    g_cur = groups[k]
+    l_cur = lists[k]
+    for el in l_cur:
+      if verbose: print "Adding client '%d'..." %(el,)
+      session.add(Client(el, g_cur))
 
-def add_files(session, imagedir):
+def add_files(session, imagedir, verbose):
   """Add files to the Biosecure database."""
  
-  def add_file(session, basename):
+  def add_file(session, basename, camera, verbose):
     """Parse a single filename and add it to the list.
        Also add a client entry if not already in the database."""
     v = os.path.splitext(basename)[0].split('_')
-    cam = v[3][4:8]
-    if cam[0:2] == 'ca':
-      cam = cam[0:2] + cam[3]
-    else:
-      cam = cam[0:2]
-    session.add(File(int(v[0][1:4]), os.path.join(cam, basename), int(v[1][2]), cam, int(v[4])))
+    if verbose: print "Adding file '%s'..." %(basename,)
+    session.add(File(int(v[0][1:4]), os.path.join(camera, basename), int(v[1][2]), camera, int(v[4])))
 
   for camera in filter(nodot, os.listdir(imagedir)):
     if not camera in ['ca0', 'caf', 'wc']:
@@ -254,37 +69,68 @@ def add_files(session, imagedir):
     camera_dir = os.path.join(imagedir, camera)
     for filename in filter(nodot, os.listdir(camera_dir)):
       basename, extension = os.path.splitext(filename)
-      add_file(session, basename)
+      add_file(session, basename, camera, verbose)
    
-
-def add_protocols(session):
+def add_protocols(session, verbose):
   """Adds protocols"""
 
-  # Protocols (using a tuple allows to add mixed cameras protocols later on)
-  session.add(Protocol('ca0', 'ca0'))
-  session.add(Protocol('caf', 'caf'))
-  session.add(Protocol('wc', 'wc'))
+  # 1. DEFINITIONS
+  # Numbers in the lists correspond to session identifiers
+  protocol_definitions = {}
+ 
+  # Protocol ca0
+  enrol = [1, 2]
+  probe = [1, 2]
+  protocol_definitions['ca0'] = [enrol, probe]
 
-  # ProtocolPurposes
-  session.add(ProtocolPurpose('ca0', 'world', 'world', 1))
-  session.add(ProtocolPurpose('ca0', 'world', 'world', 2))
-  session.add(ProtocolPurpose('ca0', 'dev', 'enrol', 1))
-  session.add(ProtocolPurpose('ca0', 'dev', 'probe', 2))
-  session.add(ProtocolPurpose('ca0', 'eval', 'enrol', 1))
-  session.add(ProtocolPurpose('ca0', 'eval', 'probe', 2))
-  session.add(ProtocolPurpose('caf', 'world', 'world', 1))
-  session.add(ProtocolPurpose('caf', 'world', 'world', 2))
-  session.add(ProtocolPurpose('caf', 'dev', 'enrol', 1))
-  session.add(ProtocolPurpose('caf', 'dev', 'probe', 2))
-  session.add(ProtocolPurpose('caf', 'eval', 'enrol', 1))
-  session.add(ProtocolPurpose('caf', 'eval', 'probe', 2))
-  session.add(ProtocolPurpose('wc', 'world', 'world', 1))
-  session.add(ProtocolPurpose('wc', 'world', 'world', 2))
-  session.add(ProtocolPurpose('wc', 'dev', 'enrol', 1))
-  session.add(ProtocolPurpose('wc', 'dev', 'probe', 2))
-  session.add(ProtocolPurpose('wc', 'eval', 'enrol', 1))
-  session.add(ProtocolPurpose('wc', 'eval', 'probe', 2))
+  # Protocol caf
+  enrol = [1, 2]
+  probe = [1, 2]
+  protocol_definitions['caf'] = [enrol, probe]
 
+  # Protocol wc
+  enrol = [1, 2]
+  probe = [1, 2]
+  protocol_definitions['wc'] = [enrol, probe]
+
+  # 2. ADDITIONS TO THE SQL DATABASE
+  protocolPurpose_list = [('world', 'train'), ('dev', 'enrol'), ('dev', 'probe'), ('eval', 'enrol'), ('eval', 'probe')]
+  for proto in protocol_definitions:
+    p = Protocol(proto)
+    # Add protocol
+    if verbose: print "Adding protocol %s..." % (proto)
+    session.add(p)
+    session.flush()
+    session.refresh(p)
+
+    # Add protocol purposes
+    for key in range(len(protocolPurpose_list)):
+      purpose = protocolPurpose_list[key]
+      pu = ProtocolPurpose(p.id, purpose[0], purpose[1])
+      if verbose: print "  Adding protocol purpose ('%s','%s')..." % (purpose[0], purpose[1])
+      session.add(pu)
+      session.flush()
+      session.refresh(pu)
+
+       # Add files attached with this protocol purpose
+      client_group = ""
+      if(key == 0): client_group = "world"
+      elif(key == 1 or key == 2): client_group = "dev"
+      elif(key == 3 or key == 4): client_group = "eval"
+      session_list = []
+      if(key == 0 or key == 1 or key == 3): 
+        session_list = protocol_definitions[proto][0]
+      elif(key == 2 or key == 4): 
+        session_list = protocol_definitions[proto][1]
+
+      # Adds 'protocol' files
+      for sid in session_list:
+        q = session.query(File).join(Client).filter(Client.sgroup == client_group).\
+              filter(and_(File.session_id == sid, File.camera == p.name)).\
+              order_by(File.id)
+        for k in q:
+          if verbose: print "    Adding protocol file '%s'..." % (k.path)
+          pu.files.append(k)
 
 def create_tables(args):
   """Creates all necessary tables (only to be used at the first time)"""
@@ -292,10 +138,7 @@ def create_tables(args):
   from bob.db.utils import create_engine_try_nolock 
  
   engine = create_engine_try_nolock(args.type, args.files[0], echo=(args.verbose >= 2))
-  Client.metadata.create_all(engine)
-  File.metadata.create_all(engine)
-  Protocol.metadata.create_all(engine)
-  ProtocolPurpose.metadata.create_all(engine)
+  Base.metadata.create_all(engine)
 
 # Driver API
 # ==========
@@ -318,9 +161,9 @@ def create(args):
   # the real work...
   create_tables(args)
   s = session_try_nolock(args.type, args.files[0], echo=(args.verbose >= 2)) 
-  add_clients(s)
-  add_files(s, args.imagedir)
-  add_protocols(s)
+  add_clients(s, args.verbose)
+  add_files(s, args.imagedir, args.verbose)
+  add_protocols(s, args.verbose)
   s.commit()
   s.close()
 

@@ -11,11 +11,11 @@ from bob.db import utils
 from .models import *
 from .driver import Interface
 
-INFO = Interface()
+import xbob.db.verification.utils
 
-SQLITE_FILE = INFO.files()[0]
+SQLITE_FILE = Interface().files()[0]
 
-class Database(object):
+class Database(xbob.db.verification.utils.SQLiteDatabase):
   """The dataset class opens and maintains a connection opened to the Database.
 
   It provides many different ways to probe for the characteristics of the data
@@ -23,30 +23,13 @@ class Database(object):
   """
 
   def __init__(self):
-    # opens a session to the database - keep it open until the end
-    self.connect()
-  
-  def connect(self):
-    """Tries connecting or re-connecting to the database"""
-    if not os.path.exists(SQLITE_FILE):
-      self.session = None
+    # call base class constructors
+    xbob.db.verification.utils.SQLiteDatabase.__init__(self, SQLITE_FILE)
 
-    else:
-      self.session = utils.session_try_readonly(INFO.type(), SQLITE_FILE)
+  def groups(self):
+    """Returns the names of all registered groups"""
 
-  def is_valid(self):
-    """Returns if a valid session has been opened for reading the database"""
-
-    return self.session is not None
-
-  def __check_validity__(self, l, obj, valid):
-    """Checks validity of user input data against a set of valid values"""
-    if not l: return valid
-    elif isinstance(l, str): return self.__check_validity__((l,), obj, valid)
-    for k in l:
-      if k not in valid:
-        raise RuntimeError, 'Invalid %s "%s". Valid values are %s, or lists/tuples of those' % (obj, k, valid)
-    return l
+    return ProtocolPurpose.group_choices # Same as Client.group_choices for this database
 
   def clients(self, protocol=None, groups=None):
     """Returns a set of clients for the specific query by the user.
@@ -57,40 +40,64 @@ class Database(object):
       The protocol to consider ('ca0', 'caf', 'wc')
 
     groups
-      The groups to which the clients belong ("dev", "eval", "world")
+      The groups to which the clients belong ('dev', 'eval', 'world')
 
-    Returns: A list containing all the client ids which have the given
-    properties.
+    Returns: A list containing all the clients which have the given properties.
     """
 
-    VALID_PROTOCOLS = ('ca0', 'caf', 'wc')
-    VALID_GROUPS = ('dev', 'eval', 'world')
-    protocol = self.__check_validity__(protocol, "protocol", VALID_PROTOCOLS)
-    groups = self.__check_validity__(groups, "group", VALID_GROUPS)
+    protocol = self.check_parameters_for_validity(protocol, "protocol", self.protocol_names())
+    groups = self.check_parameters_for_validity(groups, "group", self.groups())
     # List of the clients
-    q = self.session.query(Client).filter(Client.sgroup.in_(groups)).\
+    q = self.query(Client).filter(Client.sgroup.in_(groups)).\
           order_by(Client.id)
-    retval = []
-    for id in [k.id for k in q]: 
-      retval.append(id)
-    return retval
+    return list(q)
 
   def models(self, protocol=None, groups=None):
     """Returns a set of models for the specific query by the user.
 
     Keyword Parameters:
 
-    groups
-      The groups to which the subjects attached to the models belong ("dev", "eval", "world")
+    protocol
+      The protocol to consider ('ca0', 'caf', 'wc')
 
-    Returns: A list containing all the model ids belonging to the given group.
+    groups
+      The groups to which the subjects attached to the models belong ('dev', 'eval', 'world')
+
+    Returns: A list containing all the models belonging to the given group.
     """
 
     return self.clients(protocol, groups)
 
+  def model_ids(self, protocol=None, groups=None):
+    """Returns a list of model ids for the specific query by the user.
+
+    Keyword Parameters:
+
+    protocol
+      The protocol to consider ('ca0', 'caf', 'wc')
+
+    groups
+      The groups to which the subjects attached to the models belong ('dev', 'eval', 'world')
+
+    Returns: A list containing the ids of all models belonging to the given group.
+    """
+
+    return [client.id for client in self.clients(protocol, groups)]
+
+  def has_client_id(self, id):
+    """Returns True if we have a client with a certain integer identifier"""
+
+    return self.query(Client).filter(Client.id==id).count() != 0
+
+  def client(self, id):
+    """Returns the client object in the database given a certain id. Raises
+    an error if that does not exist."""
+
+    return self.query(Client).filter(Client.id==id).one()
+
   def get_client_id_from_model_id(self, model_id):
     """Returns the client_id attached to the given model_id
-    
+
     Keyword Parameters:
 
     model_id
@@ -100,266 +107,163 @@ class Database(object):
     """
     return model_id
 
-  def get_client_id_from_file_id(self, file_id):
-    """Returns the client_id (real client id) attached to the given file_id
-    
-    Keyword Parameters:
-
-    file_id
-      The file_id to consider
-
-    Returns: The client_id attached to the given file_id
-    """
-    q = self.session.query(File).\
-          filter(File.id == file_id)
-    if q.count() !=1:
-      #throw exception?
-      return None
-    else:
-      return q.first().client_id
-
-  def get_internal_path_from_file_id(self, file_id):
-    """Returns the unique "internal path" attached to the given file_id
-    
-    Keyword Parameters:
-
-    file_id
-      The file_id to consider
-
-    Returns: The internal path attached to the given file_id
-    """
-    q = self.session.query(File).\
-          filter(File.id == file_id)
-    if q.count() !=1:
-      #throw exception?
-      return None
-    else:
-      return q.first().path
-
-
-  def objects(self, directory=None, extension=None, protocol=None,
-      purposes=None, model_ids=None, groups=None, classes=None):
+  def objects(self, protocol=None, purposes=None, model_ids=None, groups=None,
+      classes=None):
     """Returns a set of filenames for the specific query by the user.
     WARNING: Files used as impostor access for several different models are
     only listed one and refer to only a single model
 
     Keyword Parameters:
 
-    directory
-      A directory name that will be prepended to the final filepath returned
-
-    extension
-      A filename extension that will be appended to the final filepath returned
-
     protocol
       One of the Biosecure protocols ('ca0', 'caf', 'wc').
 
     purposes
-      The purposes required to be retrieved ('enrol', 'probe') or a tuple
-      with several of them. If 'None' is given (this is the default), it is 
+      The purposes required to be retrieved ('enrol', 'probe', 'train') or a tuple
+      with several of them. If 'None' is given (this is the default), it is
       considered the same as a tuple with all possible values. This field is
       ignored for the data from the "world" group.
 
     model_ids
-      Only retrieves the files for the provided list of model ids (claimed 
-      client id). The model ids are string.  If 'None' is given (this is 
+      Only retrieves the files for the provided list of model ids (claimed
+      client id). The model ids are string.  If 'None' is given (this is
       the default), no filter over the model_ids is performed.
 
     groups
-      One of the groups ('dev', 'eval', 'world') or a tuple with several of them. 
-      If 'None' is given (this is the default), it is considered the same as a 
+      One of the groups ('dev', 'eval', 'world') or a tuple with several of them.
+      If 'None' is given (this is the default), it is considered the same as a
       tuple with all possible values.
 
     classes
-      The classes (types of accesses) to be retrieved ('client', 'impostor') 
-      or a tuple with several of them. If 'None' is given (this is the 
+      The classes (types of accesses) to be retrieved ('client', 'impostor')
+      or a tuple with several of them. If 'None' is given (this is the
       default), it is considered the same as a tuple with all possible values.
 
-    Returns: A dictionary containing:
-      - 0: the resolved filenames 
-      - 1: the model id
-      - 2: the claimed id attached to the model
-      - 3: the real id
-      - 4: the "stem" path (basename of the file)
-
-    considering allthe filtering criteria. The keys of the dictionary are 
-    unique identities for each file in the Biosecure database. Conserve these 
-    numbers if you wish to save processing results later on.
+    Returns: A list of files which have the given properties.
     """
 
-    def make_path(stem, directory, extension):
-      import os
-      if not extension: extension = ''
-      if directory: return os.path.join(directory, stem + extension)
-      return stem + extension
+    protocol = self.check_parameters_for_validity(protocol, "protocol", self.protocol_names())
+    purposes = self.check_parameters_for_validity(purposes, "purpose", self.purposes())
+    groups = self.check_parameters_for_validity(groups, "group", self.groups())
+    classes = self.check_parameters_for_validity(classes, "class", ('client', 'impostor'))
 
-    VALID_PROTOCOLS = ('ca0', 'caf', 'wc')
-    VALID_PURPOSES = ('enrol', 'probe')
-    VALID_GROUPS = ('dev', 'eval', 'world')
-    VALID_CLASSES = ('client', 'impostor')
-
-    protocol = self.__check_validity__(protocol, "protocol", VALID_PROTOCOLS)
-    purposes = self.__check_validity__(purposes, "purpose", VALID_PURPOSES)
-    groups = self.__check_validity__(groups, "group", VALID_GROUPS)
-    classes = self.__check_validity__(classes, "class", VALID_CLASSES)
-    retval = {}
-    
-    if(isinstance(model_ids,str)):
+    import collections
+    if(model_ids is None):
+      model_ids = ()
+    elif(not isinstance(model_ids,collections.Iterable)):
       model_ids = (model_ids,)
-    
+
+    # Now query the database
+    retval = []
     if 'world' in groups:
-      q = self.session.query(File, Protocol, ProtocolPurpose).join(Client).\
-            filter(Client.sgroup == 'world').\
-            filter(Protocol.name == ProtocolPurpose.name).\
-            filter(and_(Protocol.name.in_(protocol), ProtocolPurpose.sgroup == 'world')).\
-            filter(and_(File.session == ProtocolPurpose.session, File.camera == Protocol.camera))
+      q = self.query(File).join(Client).join(ProtocolPurpose, File.protocolPurposes).join(Protocol)
+      q = q.filter(and_(Protocol.name.in_(protocol), ProtocolPurpose.sgroup == 'world'))
       if model_ids:
         q = q.filter(Client.id.in_(model_ids))
-      q = q.order_by(File.camera, File.client_id, File.session, File.shot)
-      for k in q:
-        retval[k[0].id] = (make_path(k[0].path, directory, extension), k[0].client_id, k[0].client_id, k[0].client_id, k[0].path)
-    
+      q = q.order_by(File.client_id, File.camera, File.session_id, File.shot_id)
+      retval += list(q)
+
     if ('dev' in groups or 'eval' in groups):
       if('enrol' in purposes):
-        q = self.session.query(File, Protocol, ProtocolPurpose).join(Client).\
-              filter(Client.sgroup.in_(groups)).\
-              filter(Protocol.name == ProtocolPurpose.name).\
-              filter(and_(Protocol.name.in_(protocol), ProtocolPurpose.sgroup == Client.sgroup, ProtocolPurpose.purpose == 'enrol')).\
-              filter(and_(File.session == ProtocolPurpose.session, File.camera == Protocol.camera))
+        q = self.query(File).join(Client).join(ProtocolPurpose, File.protocolPurposes).join(Protocol).\
+              filter(and_(Protocol.name.in_(protocol), ProtocolPurpose.sgroup.in_(groups), ProtocolPurpose.purpose == 'enrol'))
         if model_ids:
           q = q.filter(Client.id.in_(model_ids))
-        q = q.order_by(File.camera, File.client_id, File.session, File.shot)
-        for k in q:
-          retval[k[0].id] = (make_path(k[0].path, directory, extension), k[0].client_id, k[0].client_id, k[0].client_id, k[0].path)
+        q = q.order_by(File.client_id, File.camera, File.session_id, File.shot_id)
+        retval += list(q)
+
       if('probe' in purposes):
         if('client' in classes):
-          q = self.session.query(File, Protocol, ProtocolPurpose).join(Client).\
-                filter(Client.sgroup.in_(groups)).\
-                filter(Protocol.name == ProtocolPurpose.name).\
-                filter(and_(Protocol.name.in_(protocol), ProtocolPurpose.sgroup == Client.sgroup, ProtocolPurpose.purpose == 'probe')).\
-                filter(and_(File.session == ProtocolPurpose.session, File.camera == Protocol.camera))
+          q = self.query(File).join(Client).join(ProtocolPurpose, File.protocolPurposes).join(Protocol).\
+                filter(and_(Protocol.name.in_(protocol), ProtocolPurpose.sgroup.in_(groups), ProtocolPurpose.purpose == 'probe'))
           if model_ids:
             q = q.filter(Client.id.in_(model_ids))
-          q = q.order_by(File.camera, File.client_id, File.session, File.shot)
-          for k in q:
-            retval[k[0].id] = (make_path(k[0].path, directory, extension), k[0].client_id, k[0].client_id, k[0].client_id, k[0].path)
+          q = q.order_by(File.client_id, File.camera, File.session_id, File.shot_id)
+          retval += list(q)
+
         if('impostor' in classes):
-          q = self.session.query(File, Protocol, ProtocolPurpose).join(Client).\
-                filter(Client.sgroup.in_(groups)).\
-                filter(Protocol.name == ProtocolPurpose.name).\
-                filter(and_(Protocol.name.in_(protocol), ProtocolPurpose.sgroup == Client.sgroup, ProtocolPurpose.purpose == 'probe')).\
-                filter(and_(File.session == ProtocolPurpose.session, File.camera == Protocol.camera))
-          if(model_ids and len(model_ids)==1):
-            q = q.filter(not_(Client.id.in_(model_ids)))
-          q = q.order_by(File.camera, File.client_id, File.session, File.shot)
-          for k in q:
-            if(model_ids and len(model_ids) == 1):
-              retval[k[0].id] = (make_path(k[0].path, directory, extension), model_ids[0], model_ids[0], k[0].client_id, k[0].path)
-            else:
-              retval[k[0].id] = (make_path(k[0].path, directory, extension), k[0].client_id, k[0].client_id, k[0].client_id, k[0].path)
-        
-    return retval
+          q = self.query(File).join(Client).join(ProtocolPurpose, File.protocolPurposes).join(Protocol).\
+                filter(and_(Protocol.name.in_(protocol), ProtocolPurpose.sgroup.in_(groups), ProtocolPurpose.purpose == 'probe'))
+          if len(model_ids) == 1:
+            q = q.filter(not_(File.client_id.in_(model_ids)))
+          q = q.order_by(File.client_id, File.camera, File.session_id, File.shot_id)
+          retval += list(q)
 
-  def files(self, directory=None, extension=None, protocol=None,
-      purposes=None, model_ids=None, groups=None, classes=None):
-    """Returns a set of filenames for the specific query by the user.
+    return list(set(retval)) # To remove duplicates
 
-    Keyword Parameters:
+  def protocol_names(self):
+    """Returns all registered protocol names"""
 
-    directory
-      A directory name that will be prepended to the final filepath returned
+    return [str(p.name) for p in self.protocols()]
 
-    extension
-      A filename extension that will be appended to the final filepath returned
+  def protocols(self):
+    """Returns all registered protocols"""
 
-    protocol
-      One of the Biosecure protocols ('ca0', 'caf', 'wc').
+    return list(self.query(Protocol))
 
-    purposes
-      The purposes required to be retrieved ('enrol', 'probe') or a tuple
-      with several of them. If 'None' is given (this is the default), it is 
-      considered the same as a tuple with all possible values. This field is
-      ignored for the data from the "world" group.
+  def has_protocol(self, name):
+    """Tells if a certain protocol is available"""
 
-    model_ids
-      Only retrieves the files for the provided list of model ids (claimed 
-      client id).  If 'None' is given (this is the default), no filter over 
-      the model_ids is performed.
+    return self.query(Protocol).filter(Protocol.name==name).count() != 0
 
-    groups
-      One of the groups ('dev', 'eval', 'world') or a tuple with several of them. 
-      If 'None' is given (this is the default), it is considered the same as a 
-      tuple with all possible values.
+  def protocol(self, name):
+    """Returns the protocol object in the database given a certain name. Raises
+    an error if that does not exist."""
 
-    classes
-      The classes (types of accesses) to be retrieved ('client', 'impostor') 
-      or a tuple with several of them. If 'None' is given (this is the 
-      default), it is considered the same as a tuple with all possible values.
+    return self.query(Protocol).filter(Protocol.name==name).one()
 
-    Returns: A dictionary containing the resolved filenames considering all
-    the filtering criteria. The keys of the dictionary are unique identities 
-    for each file in the Biosecure database. Conserve these numbers if you 
-    wish to save processing results later on.
-    """
+  def protocol_purposes(self):
+    """Returns all registered protocol purposes"""
 
-    retval = {}
-    d = self.objects(directory, extension, protocol, purposes, model_ids, groups, classes)
-    for k in d: retval[k] = d[k][0]
+    return list(self.query(ProtocolPurpose))
 
-    return retval
+  def purposes(self):
+    """Returns the list of allowed purposes"""
 
-  def save_one(self, id, obj, directory, extension):
-    """Saves a single object supporting the bob save() protocol.
+    return ProtocolPurpose.purpose_choices
 
-    This method will call save() on the the given object using the correct
-    database filename stem for the given id.
-    
+  def paths(self, ids, prefix=None, suffix=None):
+    """Returns a full file paths considering particular file ids, a given
+    directory and an extension
+
     Keyword Parameters:
 
     id
-      The id of the object in the database table "file".
+      The ids of the object in the database table "file". This object should be
+      a python iterable (such as a tuple or list).
 
-    obj
-      The object that needs to be saved, respecting the bob save() protocol.
+    prefix
+      The bit of path to be prepended to the filename stem
 
-    directory
-      This is the base directory to which you want to save the data. The
-      directory is tested for existence and created if it is not there with
-      os.makedirs()
+    suffix
+      The extension determines the suffix that will be appended to the filename
+      stem.
 
-    extension
-      The extension determines the way each of the arrays will be saved.
+    Returns a list (that may be empty) of the fully constructed paths given the
+    file ids.
     """
 
-    import os
-    from bob.io import save
+    fobj = self.query(File).filter(File.id.in_(ids))
+    retval = []
+    for p in ids:
+      retval.extend([k.make_path(prefix, suffix) for k in fobj if k.id == p])
+    return retval
 
-    fobj = self.session.query(File).filter_by(id=id).one()
-    fullpath = os.path.join(directory, str(fobj.path) + extension)
-    fulldir = os.path.dirname(fullpath)
-    utils.makedirs_safe(fulldir)
-    save(obj, fullpath)
-
-  def save(self, data, directory, extension):
-    """This method takes a dictionary of blitz arrays or bob.database.Array's
-    and saves the data respecting the original arrangement as returned by
-    files().
+  def reverse(self, paths):
+    """Reverses the lookup: from certain stems, returning file ids
 
     Keyword Parameters:
 
-    data
-      A dictionary with two keys 'real' and 'attack', each containing a
-      dictionary mapping file ids from the original database to an object that
-      supports the bob "save()" protocol.
+    paths
+      The filename stems I'll query for. This object should be a python
+      iterable (such as a tuple or list)
 
-    directory
-      This is the base directory to which you want to save the data. The
-      directory is tested for existence and created if it is not there with
-      os.makedirs()
+    Returns a list (that may be empty).
+    """
 
-    extension
-      The extension determines the way each of the arrays will be saved.
-    """    
+    fobj = self.query(File).filter(File.path.in_(paths))
+    retval = []
+    for p in paths:
+      retval.extend([k.id for k in fobj if k.path == p])
+    return retval
 
-    for key, value in data:
-      self.save_one(key, value, directory, extension)

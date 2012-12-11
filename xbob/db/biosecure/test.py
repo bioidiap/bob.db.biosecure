@@ -21,25 +21,33 @@
 
 import os, sys
 import unittest
-from .query import Database
+import xbob.db.biosecure
 
 class BiosecureDatabaseTest(unittest.TestCase):
   """Performs various tests on the Biosecure database."""
 
-  def test01_manage_dumplist_1(self):
+  def test01_clients(self):
+    # test that the clients() function returns reasonable output
+    db = xbob.db.biosecure.Database()
+
+    self.assertEqual(len(db.clients()), 210)
+    # TODO: more specific tests
+
+  def test02_objects(self):
+    # test that the objects() function returns reasonable output
+    db = xbob.db.biosecure.Database()
+
+    self.assertEqual(len(db.objects()), 2520)
+    # TODO: more specific tests
+
+
+  def test03_driver_api(self):
 
     from bob.db.script.dbmanage import main
 
     self.assertEqual(main('biosecure dumplist --self-test'.split()), 0)
-
-  def test02_manage_dumplist_2(self):
-    
-    from bob.db.script.dbmanage import main
-
-    self.assertEqual(main('biosecure dumplist --protocol=ca0 --classes=client --groups=dev --purposes=enrol --self-test'.split()), 0)
-
-  def test03_manage_checkfiles(self):
-
-    from bob.db.script.dbmanage import main
-
+    self.assertEqual(main('biosecure dumplist --protocol=ca0 --class=client --group=dev --purpose=enrol --client=141 --self-test'.split()), 0)
     self.assertEqual(main('biosecure checkfiles --self-test'.split()), 0)
+    self.assertEqual(main('biosecure reverse ca0/u141_s02_face_ds2-ca-0i_02 --self-test'.split()), 0)
+    self.assertEqual(main('biosecure path 748 --self-test'.split()), 0)
+
