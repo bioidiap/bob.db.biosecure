@@ -44,14 +44,14 @@ def add_clients(session, verbose):
                  162, 167, 171, 173, 174, 177, 179, 181, 182, 186,
                  187, 188, 189, 191, 192, 195, 197, 202, 205, 207]
 
-  if verbose: print "Adding clients..."
+  if verbose: print("Adding clients...")
   groups = [group_world, group_dev, group_eval]
   lists  = [list_world, list_dev, list_eval]
   for k in range(len(groups)):
     g_cur = groups[k]
     l_cur = lists[k]
     for el in l_cur:
-      if verbose>1: print "  Adding client '%d'..." %(el,)
+      if verbose>1: print("  Adding client '%d'..." %(el,))
       session.add(Client(el, g_cur))
 
 def add_files(session, imagedir, verbose):
@@ -61,7 +61,7 @@ def add_files(session, imagedir, verbose):
     """Parse a single filename and add it to the list.
        Also add a client entry if not already in the database."""
     v = os.path.splitext(basename)[0].split('_')
-    if verbose>1: print "  Adding file '%s'..." %(basename,)
+    if verbose>1: print("  Adding file '%s'..." %(basename,))
     session.add(File(int(v[0][1:4]), os.path.join(camera, basename), int(v[1][2]), camera, int(v[4])))
 
   for camera in filter(nodot, os.listdir(imagedir)):
@@ -69,7 +69,7 @@ def add_files(session, imagedir, verbose):
       continue
 
     camera_dir = os.path.join(imagedir, camera)
-    if verbose: print "Adding files for camera '%s'" % camera
+    if verbose: print("Adding files for camera '%s'" % camera)
     for filename in filter(nodot, os.listdir(camera_dir)):
       basename, extension = os.path.splitext(filename)
       add_file(session, basename, camera, verbose)
@@ -101,7 +101,7 @@ def add_protocols(session, verbose):
   for proto in protocol_definitions:
     p = Protocol(proto)
     # Add protocol
-    if verbose: print "Adding protocol %s..." % (proto)
+    if verbose: print("Adding protocol %s..." % (proto))
     session.add(p)
     session.flush()
     session.refresh(p)
@@ -110,7 +110,7 @@ def add_protocols(session, verbose):
     for key in range(len(protocolPurpose_list)):
       purpose = protocolPurpose_list[key]
       pu = ProtocolPurpose(p.id, purpose[0], purpose[1])
-      if verbose>1: print "  Adding protocol purpose ('%s','%s')..." % (purpose[0], purpose[1])
+      if verbose>1: print("  Adding protocol purpose ('%s','%s')..." % (purpose[0], purpose[1]))
       session.add(pu)
       session.flush()
       session.refresh(pu)
@@ -132,7 +132,7 @@ def add_protocols(session, verbose):
               filter(and_(File.session_id == sid, File.camera == p.name)).\
               order_by(File.id)
         for k in q:
-          if verbose>1: print "    Adding protocol file '%s'..." % (k.path)
+          if verbose>1: print("    Adding protocol file '%s'..." % (k.path))
           pu.files.append(k)
 
 def create_tables(args):
