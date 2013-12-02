@@ -30,6 +30,7 @@ class BiosecureDatabaseTest(unittest.TestCase):
     # test that the clients() function returns reasonable output
     db = xbob.db.biosecure.Database()
 
+    self.assertEqual(len(db.groups()), 3)
     self.assertEqual(len(db.clients()), 210)
     # TODO: more specific tests
 
