@@ -23,7 +23,7 @@ from setuptools import setup, find_packages
 setup(
 
     name='xbob.db.biosecure',
-    version='1.0.5',
+    version='1.0.6a0',
     description='Biosecure Database Access API for Bob',
     url='https://pypi.python.org/pypi/xbob.db.biosecure',
     license='GPLv3',
