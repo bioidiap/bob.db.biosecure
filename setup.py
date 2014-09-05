@@ -22,14 +22,14 @@ from setuptools import setup, find_packages
 # parameters that define our package.
 setup(
 
-    name='xbob.db.biosecure',
-    version='1.0.6a0',
+    name='bob.db.biosecure',
+    version='2.0.0a0',
     description='Biosecure Database Access API for Bob',
-    url='https://pypi.python.org/pypi/xbob.db.biosecure',
+    url='https://pypi.python.org/pypi/bob.db.biosecure',
     license='GPLv3',
     author='Laurent El Shafey',
     author_email='laurent.el-shafey@idiap.ch',
-    keywords='face recognition, bob, xbob, xbob.db, Biosecure',
+    keywords='face recognition, bob, bob.db, Biosecure',
     long_description=open('README.rst').read(),
 
     # This line is required for any distutils based packaging.
@@ -39,29 +39,24 @@ setup(
 
     install_requires=[
       'setuptools',
-      'bob',  # base signal proc./machine learning library
-      'xbob.db.verification.utils>=0.1.4' # defines a set of utilities for face verification databases like this one.
-      ],
+      'bob.db.base',
+      'bob.db.verification.utils'
+    ],
 
     namespace_packages = [
-      'xbob',
-      'xbob.db',
-      ],
+      'bob',
+      'bob.db',
+    ],
 
     entry_points = {
       # bob database declaration
       'bob.db': [
-        'biosecure = xbob.db.biosecure.driver:Interface',
-        ],
-
-      # bob unittest declaration
-      'bob.test': [
-        'biosecure = xbob.db.biosecure.test:BiosecureDatabaseTest',
-        ],
-      },
+        'biosecure = bob.db.biosecure.driver:Interface',
+      ],
+    },
 
     classifiers = [
-      'Development Status :: 5 - Production/Stable',
+      'Development Status :: 4 - Beta',
       'Environment :: Console',
       'Intended Audience :: Developers',
       'Intended Audience :: Education',

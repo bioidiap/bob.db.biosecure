@@ -152,7 +152,7 @@ def add_protocols(session, verbose):
 def create_tables(args):
   """Creates all necessary tables (only to be used at the first time)"""
 
-  from bob.db.utils import create_engine_try_nolock
+  from bob.db.base.utils import create_engine_try_nolock
 
   engine = create_engine_try_nolock(args.type, args.files[0], echo=(args.verbose > 2))
   Base.metadata.create_all(engine)
@@ -163,7 +163,7 @@ def create_tables(args):
 def create(args):
   """Creates or re-creates this database"""
 
-  from bob.db.utils import session_try_nolock
+  from bob.db.base.utils import session_try_nolock
 
   dbfile = args.files[0]
 

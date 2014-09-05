@@ -1,11 +1,26 @@
+.. vim: set fileencoding=utf-8 :
+.. Manuel Guenther <manuel.guenther@idiap.ch>
+.. Thu Sep  4 11:35:05 CEST 2014
+
+.. image:: https://travis-ci.org/bioidiap/bob.db.biosecure.svg?branch=master
+   :target: https://travis-ci.org/bioidiap/bob.db.biosecure
+.. image:: https://coveralls.io/repos/bioidiap/bob.db.biosecure/badge.png
+   :target: https://coveralls.io/r/bioidiap/bob.db.biosecure
+.. image:: http://img.shields.io/github/tag/bioidiap/bob.db.biosecure.png
+   :target: https://github.com/bioidiap/bob.db.biosecure
+.. image:: http://img.shields.io/pypi/v/bob.db.biosecure.png
+   :target: https://pypi.python.org/pypi/bob.db.biosecure
+.. image:: http://img.shields.io/pypi/dm/bob.db.biosecure.png
+   :target: https://pypi.python.org/pypi/bob.db.biosecure
+
 ====================
  Biosecure Database
 ====================
 
 This package contains the access API and descriptions for the `Biosecure
-Database <http://biosecure.it-sudparis.eu/AB/index.php?option=com_content&view=article&id=11&Itemid=14>`_. 
-The actual raw data for the database should be downloaded from the original URL. 
-This package only contains the `Bob <http://www.idiap.ch/software/bob/>`_ 
+Database <http://biosecure.it-sudparis.eu/AB/index.php?option=com_content&view=article&id=11&Itemid=14>`_.
+The actual raw data for the database should be downloaded from the original URL.
+This package only contains the `Bob <http://www.idiap.ch/software/bob/>`_
 accessor methods to use the DB directly from python, with our certified protocols.
 
 You would normally not install this package unless you are maintaining it. What
@@ -27,7 +42,7 @@ The package is available in two different distribution formats:
 1. You can download it from `PyPI <http://pypi.python.org/pypi>`_, or
 
 2. You can download it in its source form from `its git repository
-   <https://github.com/bioidiap/xbob.db.biosecure>`_. When you download the
+   <https://github.com/bioidiap/bob.db.biosecure>`_. When you download the
    version at the git repository, you will need to run a command to recreate
    the backend SQLite file required for its operation. This means that the
    database raw files must be installed somewhere in this case. With option
@@ -47,11 +62,11 @@ script)::
 
     install_requires=[
       ...
-      "xbob.db.biosecure",
+      "bob.db.biosecure",
     ],
 
 Proceed normally with your ``boostrap/buildout`` steps and you should be all
-set. That means you can now import the ``xbob.db.biosecure`` namespace into your scripts.
+set. That means you can now import the ``bob.db.biosecure`` namespace into your scripts.
 
 Modify your buildout.cfg and download from git
 ==============================================
@@ -67,8 +82,8 @@ lines::
   auto-checkout = *
   eggs = bob
          ...
-         xbob.db.biosecure
+         bob.db.biosecure
 
   [sources]
-  xbob.db.biosecure = git https://github.com/bioidiap/xbob.db.biosecure.git
+  bob.db.biosecure = git https://github.com/bioidiap/bob.db.biosecure.git
   ...
