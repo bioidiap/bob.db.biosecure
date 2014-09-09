@@ -59,6 +59,22 @@ def test_objects():
 
 
 @db_available
+def test_annotations():
+  # Tests that for all files the annotated eye positions exist and are in correct order
+  db = bob.db.biosecure.Database()
+  for f in db.objects():
+    annotations = db.annotations(f.id)
+    assert annotations is not None
+    assert len(annotations) == 2
+    assert 'leye' in annotations
+    assert 'reye' in annotations
+    assert len(annotations['reye']) == 2
+    assert len(annotations['leye']) == 2
+    # assert that the eye positions are not exchanged
+    assert annotations['leye'][1] > annotations['reye'][1]
+
+
+@db_available
 def test_driver_api():
 
   from bob.db.base.script.dbmanage import main
