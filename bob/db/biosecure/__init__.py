@@ -20,7 +20,7 @@
 """
 
 from .query import Database
-from .models import Client, File, Protocol, ProtocolPurpose
+from .models import Client, File, Protocol, ProtocolPurpose, Annotation
 
 def get_config():
   """Returns a string containing the configuration information.

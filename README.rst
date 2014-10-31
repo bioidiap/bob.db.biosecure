@@ -1,89 +1,43 @@
 .. vim: set fileencoding=utf-8 :
 .. Manuel Guenther <manuel.guenther@idiap.ch>
-.. Thu Sep  4 11:35:05 CEST 2014
+.. Fri Oct 31 14:18:57 CET 2014
 
+.. image:: http://img.shields.io/badge/docs-stable-yellow.png
+   :target: http://pythonhosted.org/bob.db.biosecure/index.html
+.. image:: http://img.shields.io/badge/docs-latest-orange.png
+   :target: https://www.idiap.ch/software/bob/docs/latest/bioidiap/bob.db.biosecure/master/index.html
 .. image:: https://travis-ci.org/bioidiap/bob.db.biosecure.svg?branch=master
    :target: https://travis-ci.org/bioidiap/bob.db.biosecure
 .. image:: https://coveralls.io/repos/bioidiap/bob.db.biosecure/badge.png
    :target: https://coveralls.io/r/bioidiap/bob.db.biosecure
-.. image:: http://img.shields.io/github/tag/bioidiap/bob.db.biosecure.png
-   :target: https://github.com/bioidiap/bob.db.biosecure
+.. image:: https://img.shields.io/badge/github-master-0000c0.png
+   :target: https://github.com/bioidiap/bob.db.biosecure/tree/master
 .. image:: http://img.shields.io/pypi/v/bob.db.biosecure.png
    :target: https://pypi.python.org/pypi/bob.db.biosecure
 .. image:: http://img.shields.io/pypi/dm/bob.db.biosecure.png
    :target: https://pypi.python.org/pypi/bob.db.biosecure
+.. image:: https://img.shields.io/badge/original-data--files-a000a0.png
+   :target: http://biosecure.it-sudparis.eu/AB
 
-====================
- Biosecure Database
-====================
+======================================
+ BioSecure Database Interface for Bob
+======================================
 
-This package contains the access API and descriptions for the `Biosecure
-Database <http://biosecure.it-sudparis.eu/AB/index.php?option=com_content&view=article&id=11&Itemid=14>`_.
-The actual raw data for the database should be downloaded from the original URL.
-This package only contains the `Bob <http://www.idiap.ch/software/bob/>`_
-accessor methods to use the DB directly from python, with our certified protocols.
+This package contains an interface for the evaluation protocol of the BioSecure_ database, particularly for the images from the BioSecure_ database.
+This package does not contain the original BioSecure_ data files, which need to be obtained through the link above.
 
-You would normally not install this package unless you are maintaining it. What
-you would do instead is to tie it in at the package you need to **use** it.
-There are a few ways to achieve this:
 
-1. You can add this package as a requirement at the ``setup.py`` for your own
-   `satellite package
-   <https://github.com/idiap/bob/wiki/Virtual-Work-Environments-with-Buildout>`_
-   or to your Buildout ``.cfg`` file, if you prefer it that way. With this
-   method, this package gets automatically downloaded and installed on your
-   working environment, or
+Installation
+------------
+To install this package -- alone or together with other `Packages of Bob <https://github.com/idiap/bob/wiki/Packages>`_ -- please read the `Installation Instructions <https://github.com/idiap/bob/wiki/Installation>`_.
+For Bob_ to be able to work properly, some dependent packages are required to be installed.
+Please make sure that you have read the `Dependencies <https://github.com/idiap/bob/wiki/Dependencies>`_ for your operating system.
 
-2. You can manually download and install this package using commands like
-   ``easy_install`` or ``pip``.
+Documentation
+-------------
+For further documentation on this package, please read the `Stable Version <http://pythonhosted.org/bob.db.biosecure/index.html>`_ or the `Latest Version <https://www.idiap.ch/software/bob/docs/latest/bioidiap/bob.db.biosecure/master/index.html>`_ of the documentation.
+For a list of tutorials on this or the other packages ob Bob_, or information on submitting issues, asking questions and starting discussions, please visit its website.
 
-The package is available in two different distribution formats:
+.. _bob: https://www.idiap.ch/software/bob
+.. _biosecure:  http://biosecure.it-sudparis.eu/AB
 
-1. You can download it from `PyPI <http://pypi.python.org/pypi>`_, or
-
-2. You can download it in its source form from `its git repository
-   <https://github.com/bioidiap/bob.db.biosecure>`_. When you download the
-   version at the git repository, you will need to run a command to recreate
-   the backend SQLite file required for its operation. This means that the
-   database raw files must be installed somewhere in this case. With option
-   ``a`` you can run in `dummy` mode and only download the raw data files for
-   the database once you are happy with your setup.
-
-You can mix and match points 1/2 and a/b above based on your requirements. Here
-are some examples:
-
-Modify your setup.py and download from PyPI
-===========================================
-
-That is the easiest. Edit your ``setup.py`` in your satellite package and add
-the following entry in the ``install_requires`` section (note: ``...`` means
-`whatever extra stuff you may have in-between`, don't put that on your
-script)::
-
-    install_requires=[
-      ...
-      "bob.db.biosecure",
-    ],
-
-Proceed normally with your ``boostrap/buildout`` steps and you should be all
-set. That means you can now import the ``bob.db.biosecure`` namespace into your scripts.
-
-Modify your buildout.cfg and download from git
-==============================================
-
-You will need to add a dependence to `mr.developer
-<http://pypi.python.org/pypi/mr.developer/>`_ to be able to install from our
-git repositories. Your ``buildout.cfg`` file should contain the following
-lines::
-
-  [buildout]
-  ...
-  extensions = mr.developer
-  auto-checkout = *
-  eggs = bob
-         ...
-         bob.db.biosecure
-
-  [sources]
-  bob.db.biosecure = git https://github.com/bioidiap/bob.db.biosecure.git
-  ...

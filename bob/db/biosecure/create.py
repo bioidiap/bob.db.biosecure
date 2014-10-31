@@ -119,22 +119,22 @@ def add_protocols(session, verbose):
   protocol_definitions = {}
 
   # Protocol ca0
-  enrol = [1, 2]
+  enroll = [1, 2]
   probe = [1, 2]
-  protocol_definitions['ca0'] = [enrol, probe]
+  protocol_definitions['ca0'] = [enroll, probe]
 
   # Protocol caf
-  enrol = [1, 2]
+  enroll = [1, 2]
   probe = [1, 2]
-  protocol_definitions['caf'] = [enrol, probe]
+  protocol_definitions['caf'] = [enroll, probe]
 
   # Protocol wc
-  enrol = [1, 2]
+  enroll = [1, 2]
   probe = [1, 2]
-  protocol_definitions['wc'] = [enrol, probe]
+  protocol_definitions['wc'] = [enroll, probe]
 
   # 2. ADDITIONS TO THE SQL DATABASE
-  protocolPurpose_list = [('world', 'train'), ('dev', 'enrol'), ('dev', 'probe'), ('eval', 'enrol'), ('eval', 'probe')]
+  protocolPurpose_list = [('world', 'train'), ('dev', 'enroll'), ('dev', 'probe'), ('eval', 'enroll'), ('eval', 'probe')]
   for proto in protocol_definitions:
     p = Protocol(proto)
     # Add protocol

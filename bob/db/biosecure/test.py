@@ -80,7 +80,7 @@ def test_driver_api():
   from bob.db.base.script.dbmanage import main
 
   assert main('biosecure dumplist --self-test'.split()) == 0
-  assert main('biosecure dumplist --protocol=ca0 --class=client --group=dev --purpose=enrol --client=141 --self-test'.split()) == 0
+  assert main('biosecure dumplist --protocol=ca0 --class=client --group=dev --purpose=enroll --client=141 --self-test'.split()) == 0
   assert main('biosecure checkfiles --self-test'.split()) == 0
   assert main('biosecure reverse ca0/u141_s02_face_ds2-ca-0i_02 --self-test'.split()) == 0
   assert main('biosecure path 748 --self-test'.split()) == 0
