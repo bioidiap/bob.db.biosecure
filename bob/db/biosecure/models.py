@@ -75,6 +75,7 @@ class File(Base, bob.db.verification.utils.File):
 
   # for Python
   client = relationship("Client", backref=backref("files", order_by=id))
+  annotation = relationship("Annotation", backref=backref("file"), uselist=False)
 
   def __init__(self, client_id, path, session_id, camera, shot_id):
     # call base class constructor
