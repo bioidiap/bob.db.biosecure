@@ -6,7 +6,7 @@
    :target: http://pythonhosted.org/bob.db.biosecure/index.html
 .. image:: http://img.shields.io/badge/docs-latest-orange.png
    :target: https://www.idiap.ch/software/bob/docs/latest/bioidiap/bob.db.biosecure/master/index.html
-.. image:: https://travis-ci.org/bioidiap/bob.db.biosecure.svg?branch=v2.0.4
+.. image:: https://travis-ci.org/bioidiap/bob.db.biosecure.svg?branch=master
    :target: https://travis-ci.org/bioidiap/bob.db.biosecure
 .. image:: https://coveralls.io/repos/bioidiap/bob.db.biosecure/badge.png
    :target: https://coveralls.io/r/bioidiap/bob.db.biosecure
