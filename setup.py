@@ -32,7 +32,7 @@ setup(
     name='bob.db.biosecure',
     version=version,
     description='Biosecure Database Access API for Bob',
-    url='https://pypi.python.org/pypi/bob.db.biosecure',
+    url='https://github.com/bioidiap/bob.db.biosecure',
     license='GPLv3',
     author='Laurent El Shafey',
     author_email='laurent.el-shafey@idiap.ch',
