@@ -24,11 +24,11 @@ import os
 from .models import *
 from .driver import Interface
 
-import bob.db.verification.utils
+import bob.db.base
 
 SQLITE_FILE = Interface().files()[0]
 
-class Database(bob.db.verification.utils.SQLiteDatabase):
+class Database(bob.db.base.SQLiteDatabase):
   """The dataset class opens and maintains a connection opened to the Database.
 
   It provides many different ways to probe for the characteristics of the data
@@ -37,7 +37,9 @@ class Database(bob.db.verification.utils.SQLiteDatabase):
 
   def __init__(self, original_directory = None, original_extension = '.jpg'):
     # call base class constructors
-    bob.db.verification.utils.SQLiteDatabase.__init__(self, SQLITE_FILE, File, original_directory = original_directory, original_extension = original_extension)
+    super(Database, self).__init__(SQLITE_FILE, File)
+    self.original_directory = original_directory
+    self.original_extension = original_extension
 
   def groups(self, protocol=None):
     """Returns the names of all registered groups"""
