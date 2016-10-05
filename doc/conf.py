@@ -131,7 +131,7 @@ pygments_style = 'sphinx'
 
 # Some variables which are useful for generated material
 project_variable = project.replace('.', '_')
-short_description = u'Biosecure Database API'
+short_description = u'Biosecure Database Access API for Bob'
 owner = [u'Idiap Research Institute']
 
 
