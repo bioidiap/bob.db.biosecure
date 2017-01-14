@@ -1,17 +1,17 @@
 .. vim: set fileencoding=utf-8 :
 .. Thu Aug 18 20:09:07 CEST 2016
 
-.. image:: http://img.shields.io/badge/docs-stable-yellow.png
+.. image:: http://img.shields.io/badge/docs-stable-yellow.svg
    :target: http://pythonhosted.org/bob.db.biosecure/index.html
-.. image:: http://img.shields.io/badge/docs-latest-orange.png
+.. image:: http://img.shields.io/badge/docs-latest-orange.svg
    :target: https://www.idiap.ch/software/bob/docs/latest/bob/bob.db.biosecure/master/index.html
 .. image:: https://gitlab.idiap.ch/bob/bob.db.biosecure/badges/master/build.svg
    :target: https://gitlab.idiap.ch/bob/bob.db.biosecure/commits/master
 .. image:: https://img.shields.io/badge/gitlab-project-0000c0.svg
    :target: https://gitlab.idiap.ch/bob/bob.db.biosecure
-.. image:: http://img.shields.io/pypi/v/bob.db.biosecure.png
+.. image:: http://img.shields.io/pypi/v/bob.db.biosecure.svg
    :target: https://pypi.python.org/pypi/bob.db.biosecure
-.. image:: http://img.shields.io/pypi/dm/bob.db.biosecure.png
+.. image:: http://img.shields.io/pypi/dm/bob.db.biosecure.svg
    :target: https://pypi.python.org/pypi/bob.db.biosecure
 .. image:: https://img.shields.io/badge/original-data--files-a000a0.png
    :target: http://biosecure.it-sudparis.eu/AB
@@ -46,5 +46,5 @@ development `mailing list`_.
 
 .. Place your references here:
 .. _bob: https://www.idiap.ch/software/bob
-.. _installation: https://gitlab.idiap.ch/bob/bob/wikis/Installation
+.. _installation: https://www.idiap.ch/software/bob/install
 .. _mailing list: https://groups.google.com/forum/?fromgroups#!forum/bob-devel
