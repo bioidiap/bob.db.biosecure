@@ -37,9 +37,8 @@ class Database(bob.db.base.SQLiteDatabase):
 
   def __init__(self, original_directory = None, original_extension = '.jpg'):
     # call base class constructors
-    super(Database, self).__init__(SQLITE_FILE, File)
-    self.original_directory = original_directory
-    self.original_extension = original_extension
+    super(Database, self).__init__(SQLITE_FILE, File,
+                                   original_directory, original_extension)
 
   def groups(self, protocol=None):
     """Returns the names of all registered groups"""
