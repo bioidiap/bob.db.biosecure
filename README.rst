@@ -2,9 +2,9 @@
 .. Thu Aug 18 20:09:07 CEST 2016
 
 .. image:: http://img.shields.io/badge/docs-stable-yellow.svg
-   :target: http://pythonhosted.org/bob.db.biosecure/index.html
+   :target: https://www.idiap.ch/software/bob/docs/bob/bob.db.biosecure/stable/index.html
 .. image:: http://img.shields.io/badge/docs-latest-orange.svg
-   :target: https://www.idiap.ch/software/bob/docs/latest/bob/bob.db.biosecure/master/index.html
+   :target: https://www.idiap.ch/software/bob/docs/bob/bob.db.biosecure/master/index.html
 .. image:: https://gitlab.idiap.ch/bob/bob.db.biosecure/badges/master/build.svg
    :target: https://gitlab.idiap.ch/bob/bob.db.biosecure/commits/master
 .. image:: https://gitlab.idiap.ch/bob/bob.db.biosecure/badges/master/coverage.svg
@@ -12,8 +12,6 @@
 .. image:: https://img.shields.io/badge/gitlab-project-0000c0.svg
    :target: https://gitlab.idiap.ch/bob/bob.db.biosecure
 .. image:: http://img.shields.io/pypi/v/bob.db.biosecure.svg
-   :target: https://pypi.python.org/pypi/bob.db.biosecure
-.. image:: http://img.shields.io/pypi/dm/bob.db.biosecure.svg
    :target: https://pypi.python.org/pypi/bob.db.biosecure
 .. image:: https://img.shields.io/badge/original-data--files-a000a0.png
    :target: http://biosecure.it-sudparis.eu/AB
@@ -32,7 +30,7 @@ It is worth noting that this package does not contain the original BioSecure_ da
 Installation
 ------------
 
-Complete Bob's `installation`_ instructions. Then, to install this pacakge,
+Complete Bob's `installation`_ instructions. Then, to install this package,
 run::
 
   $ conda install bob.db.biosecure
