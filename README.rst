@@ -22,8 +22,8 @@
 =====================================
 
 This package is part of the signal-processing and machine learning toolbox
-Bob_ and it contains an interface for the evaluation protocol of the BioSecure_ database, particularly for the images from the BioSecure_ database.
-It is worth noting that this package does not contain the original BioSecure_ data files, which need to be obtained through the link above.
+Bob_ and it contains an interface for the evaluation protocol of the BioSecure database, particularly for the images from the BioSecure database.
+It is worth noting that this package does not contain the original BioSecure data files, which need to be obtained through the link above.
 
 
 
