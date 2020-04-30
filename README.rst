@@ -1,20 +1,14 @@
 .. vim: set fileencoding=utf-8 :
 .. Thu Aug 18 20:09:07 CEST 2016
 
-.. image:: http://img.shields.io/badge/docs-stable-yellow.svg
-   :target: https://www.idiap.ch/software/bob/docs/bob/bob.db.biosecure/stable/index.html
-.. image:: http://img.shields.io/badge/docs-latest-orange.svg
+.. image:: https://img.shields.io/badge/docs-available-orage.svg
    :target: https://www.idiap.ch/software/bob/docs/bob/bob.db.biosecure/master/index.html
-.. image:: https://gitlab.idiap.ch/bob/bob.db.biosecure/badges/master/build.svg
+.. image:: https://gitlab.idiap.ch/bob/bob.db.biosecure/badges/master/pipeline.svg
    :target: https://gitlab.idiap.ch/bob/bob.db.biosecure/commits/master
 .. image:: https://gitlab.idiap.ch/bob/bob.db.biosecure/badges/master/coverage.svg
    :target: https://gitlab.idiap.ch/bob/bob.db.biosecure/commits/master
 .. image:: https://img.shields.io/badge/gitlab-project-0000c0.svg
    :target: https://gitlab.idiap.ch/bob/bob.db.biosecure
-.. image:: http://img.shields.io/pypi/v/bob.db.biosecure.svg
-   :target: https://pypi.python.org/pypi/bob.db.biosecure
-.. image:: https://img.shields.io/badge/original-data--files-a000a0.png
-   :target: http://biosecure.it-sudparis.eu/AB
 
 
 =====================================
